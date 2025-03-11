@@ -1,4 +1,3 @@
-// components/CodeEditor.tsx
 import React, { useState } from 'react';
 import MonacoEditor from 'react-monaco-editor';
 

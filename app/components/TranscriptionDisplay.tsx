@@ -69,7 +69,7 @@ const TranscriptionDisplay: React.FC<TranscriptionDisplayProps> = ({
         const isScrolledToBottom = Math.abs(scrollHeight - scrollTop - clientHeight) < 1;
 
         if (containerRef.current.querySelector('.scroll-indicator')) {
-            containerRef.current.querySelector('.scroll-indicator')!.style.opacity =
+            (containerRef.current.querySelector('.scroll-indicator') as HTMLElement).style.opacity =
                 isScrolledToBottom ? '0' : '1';
         }
     };
