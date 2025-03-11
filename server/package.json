@@ -1,0 +1,21 @@
+{
+        "name": "server",
+        "version": "1.0.0",
+        "type": "module",
+        "engines": {
+          "node": ">=20.0.0"
+        },
+        "scripts": {
+          "start": "NODE_OPTIONS='--import tsx' node server.ts",
+          "dev": "NODE_OPTIONS='--import tsx' node --watch server.ts",
+          "build": "tsc"
+        },
+        "dependencies": {
+          "socket.io": "^4.8.1"
+        },
+        "devDependencies": {
+          "@types/node": "^20.0.0",
+          "tsx": "^4.7.0",
+          "typescript": "^5.0.0"
+        }
+      }

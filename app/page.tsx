@@ -3,7 +3,7 @@
 
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { useRouter } from 'next/navigation'; // Use next/navigation for useRouter in app directory
+import {useRouter} from "next/router";
 
 const HomePage: React.FC = () => {
     const router = useRouter(); // Get the router instance
