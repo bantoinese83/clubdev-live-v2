@@ -1,9 +1,9 @@
 import React, {useEffect, useRef, useState} from 'react';
-import VideoDisplay from './VideoDisplay';
-import TranscriptionDisplay from './TranscriptionDisplay';
-import CodeEditor from './CodeEditor';
-import CashTagDisplay from './CashTagDisplay';
-import RoomIdDisplay from './RoomIdDisplay';
+import VideoDisplay from './VideoDisplay.jsx';
+import TranscriptionDisplay from './TranscriptionDisplay.jsx';
+import CodeEditor from './CodeEditor.jsx';
+import CashTagDisplay from './CashTagDisplay.jsx';
+import RoomIdDisplay from './RoomIdDisplay.jsx';
 import io from 'socket.io-client';
 import {Socket} from 'socket.io-client';
 

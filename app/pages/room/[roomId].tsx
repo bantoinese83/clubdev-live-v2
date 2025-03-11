@@ -1,33 +1,55 @@
-// pages/room/[roomId].tsx
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
-import StreamerInterface from '../../components/StreamerInterface';
-import ViewerInterface from '../../components/ViewerInterface';
+import React, { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import StreamerInterface from '../../components/StreamerInterface.jsx';
+import ViewerInterface from '../../components/ViewerInterface.jsx';
+import io from 'socket.io-client';
 
-const RoomPage: React.FC = () => {
+const RoomPage = ({ params }) => {
     const router = useRouter();
-    const { roomId } = router.query;
-    const [isStreamer, setIsStreamer] = useState<boolean>(false); // Basic role determination - can be improved
+    const { roomId } = params;
+    const [isStreamer, setIsStreamer] = useState(false);
+    const [isConnected, setIsConnected] = useState(false);
+    const socketRef = useRef(null);
 
     useEffect(() => {
-        // Simple way to determine streamer role for MVP - first person in room is streamer.
-        // In a real app, you'd need more robust role management, maybe using signaling.
-        // For now, assume creator of the room URL is the streamer.
-        setIsStreamer(true); // For simplicity, anyone accessing the room URL is assumed streamer.
+        socketRef.current = io('http://localhost:3001');
+        socketRef.current.emit('join-room', roomId);
+
+        socketRef.current.on('connect', () => {
+            setIsConnected(true);
+        });
+
+        socketRef.current.on('disconnect', () => {
+            setIsConnected(false);
+        });
+
+        return () => {
+            if (socketRef.current) {
+                socketRef.current.disconnect();
+            }
+        };
     }, [roomId]);
 
-    if (!roomId) {
-        return <div>Loading...</div>; // Or handle no roomId case
+    const handleRoleSelection = (role) => {
+        setIsStreamer(role === 'streamer');
+    };
+
+    if (!isConnected) {
+        return <div>Connecting...</div>;
     }
 
     return (
         <div>
-            <h1>Room ID: {roomId}</h1>
-            {isStreamer ? (
-                <StreamerInterface roomId={roomId as string} />
+            {!isStreamer ? (
+                <div>
+                    <h2>Select your role:</h2>
+                    <button onClick={() => handleRoleSelection('streamer')}>Streamer</button>
+                    <button onClick={() => handleRoleSelection('viewer')}>Viewer</button>
+                </div>
             ) : (
-                <ViewerInterface roomId={roomId as string} />
+                <StreamerInterface roomId={roomId} />
             )}
+            {isStreamer === false && <ViewerInterface roomId={roomId} />}
         </div>
     );
 };
