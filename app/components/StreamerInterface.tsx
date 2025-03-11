@@ -1,4 +1,3 @@
-// components/StreamerInterface.tsx
 import React, { useEffect, useRef, useState } from 'react';
 import VideoDisplay from './VideoDisplay';
 import CodeEditor from './CodeEditor';
@@ -7,19 +6,20 @@ import ProfileSetup from './ProfileSetup';
 import CashTagDisplay from './CashTagDisplay';
 import RoomIdDisplay from './RoomIdDisplay';
 import io from 'socket.io-client';
+import { Socket } from 'socket.io-client';
 
 interface StreamerInterfaceProps {
     roomId: string;
 }
 
 const StreamerInterface: React.FC<StreamerInterfaceProps> = ({ roomId }) => {
-    const localVideoRef = useRef<HTMLVideoElement>(null);
+    const localVideoRef = useRef<HTMLVideoElement | null>(null);
     const [localStream, setLocalStream] = useState<MediaStream | null>(null);
     const [transcription, setTranscription] = useState<string>('');
     const [code, setCode] = useState<string>('');
     const [profile, setProfile] = useState<{ name: string; cashTags: string }>({ name: '', cashTags: '' });
 
-    const socketRef = useRef<SocketIOClient.Socket | null>(null);
+    const socketRef = useRef<Socket | null>(null);
 
     useEffect(() => {
         socketRef.current = io('http://localhost:3001'); // Replace with your signaling server URL

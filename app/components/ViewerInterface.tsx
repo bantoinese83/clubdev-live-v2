@@ -1,4 +1,3 @@
-// components/ViewerInterface.tsx
 import React, { useEffect, useRef, useState } from 'react';
 import VideoDisplay from './VideoDisplay';
 import TranscriptionDisplay from './TranscriptionDisplay';
@@ -6,19 +5,20 @@ import CodeEditor from './CodeEditor';
 import CashTagDisplay from './CashTagDisplay';
 import RoomIdDisplay from './RoomIdDisplay';
 import io from 'socket.io-client';
+import { Socket } from 'socket.io-client';
 
 interface ViewerInterfaceProps {
     roomId: string;
 }
 
 const ViewerInterface: React.FC<ViewerInterfaceProps> = ({ roomId }) => {
-    const remoteVideoRef = useRef<HTMLVideoElement>(null);
+    const remoteVideoRef = useRef<HTMLVideoElement | null>(null);
     const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
     const [transcription, setTranscription] = useState<string>('');
     const [code, setCode] = useState<string>('');
     const [streamerProfile, setStreamerProfile] = useState<{ name: string; cashTags: string }>({ name: '', cashTags: '' });
 
-    const socketRef = useRef<SocketIOClient.Socket | null>(null);
+    const socketRef = useRef<Socket | null>(null);
 
     useEffect(() => {
         socketRef.current = io('http://localhost:3001'); // Replace with your signaling server URL
